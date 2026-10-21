@@ -1,0 +1,65 @@
+.dashboard-root {
+    -fx-background-color: #34231e;
+    -fx-font-family: "Segoe UI";
+}
+
+.dashboard-heading {
+    -fx-text-fill: #f3e9d8;
+    -fx-font-size: 30px;
+    -fx-font-weight: bold;
+}
+
+.dashboard-subtitle {
+    -fx-text-fill: #e0cdb8;
+    -fx-font-size: 15px;
+}
+
+.dashboard-card {
+    -fx-background-color: #4b3028;
+    -fx-background-radius: 16;
+    -fx-border-color: #68483b;
+    -fx-border-radius: 16;
+    -fx-effect: dropshadow(gaussian, rgba(15, 9, 7, 0.24), 16, 0.1, 0, 4);
+}
+
+.dashboard-card-title {
+    -fx-text-fill: #e0cdb8;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.dashboard-card-value {
+    -fx-text-fill: #f3e9d8;
+    -fx-font-size: 30px;
+    -fx-font-weight: bold;
+}
+
+.dashboard-error-value {
+    -fx-text-fill: #ffc1ad;
+    -fx-font-size: 20px;
+}
+
+.dashboard-card-description {
+    -fx-text-fill: #c4a58e;
+    -fx-font-size: 12px;
+}
+
+.dashboard-nav-button, .dashboard-refresh {
+    -fx-background-color: #68483b;
+    -fx-background-radius: 8;
+    -fx-text-fill: #f3e9d8;
+    -fx-padding: 9 12;
+    -fx-cursor: hand;
+}
+
+.dashboard-nav-button:hover, .dashboard-refresh:hover {
+    -fx-background-color: #805747;
+}
+
+.dashboard-message {
+    -fx-text-fill: #b8d7ae;
+}
+
+.dashboard-error {
+    -fx-text-fill: #ffc1ad;
+}

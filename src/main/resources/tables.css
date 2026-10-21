@@ -1,0 +1,105 @@
+.tables-root {
+    -fx-background-color: #34231e;
+    -fx-font-family: "Segoe UI";
+}
+
+.tables-heading {
+    -fx-text-fill: #f3e9d8;
+    -fx-font-size: 30px;
+    -fx-font-weight: bold;
+}
+
+.tables-subtitle {
+    -fx-text-fill: #e0cdb8;
+    -fx-font-size: 15px;
+}
+
+.tables-card {
+    -fx-background-color: #4b3028;
+    -fx-background-radius: 14;
+    -fx-border-color: #68483b;
+    -fx-border-radius: 14;
+    -fx-effect: dropshadow(gaussian, rgba(15, 9, 7, 0.22), 12, 0.1, 0, 3);
+}
+
+.table-available {
+    -fx-border-color: #789c70;
+}
+
+.table-occupied {
+    -fx-border-color: #bf7159;
+}
+
+.table-reserved {
+    -fx-border-color: #d4a45e;
+}
+
+.table-name {
+    -fx-text-fill: #f3e9d8;
+    -fx-font-size: 21px;
+    -fx-font-weight: bold;
+}
+
+.table-detail {
+    -fx-text-fill: #e0cdb8;
+    -fx-font-size: 14px;
+}
+
+.table-status {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.table-status-available {
+    -fx-text-fill: #b8d7ae;
+}
+
+.table-status-occupied {
+    -fx-text-fill: #ffc1ad;
+}
+
+.table-status-reserved {
+    -fx-text-fill: #f0cd88;
+}
+
+.table-total {
+    -fx-text-fill: #f3e9d8;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.tables-button, .tables-primary-button {
+    -fx-background-radius: 8;
+    -fx-text-fill: #f3e9d8;
+    -fx-padding: 9 11;
+    -fx-cursor: hand;
+}
+
+.tables-button {
+    -fx-background-color: #68483b;
+}
+
+.tables-button:hover {
+    -fx-background-color: #805747;
+}
+
+.tables-primary-button {
+    -fx-background-color: #a95039;
+    -fx-font-weight: bold;
+}
+
+.tables-primary-button:hover {
+    -fx-background-color: #bd6249;
+}
+
+.tables-message {
+    -fx-text-fill: #b8d7ae;
+}
+
+.tables-success {
+    -fx-text-fill: #b8d7ae;
+}
+
+.tables-error {
+    -fx-text-fill: #ffc1ad;
+}

@@ -1,0 +1,69 @@
+.history-root {
+    -fx-background-color: #34231e;
+    -fx-font-family: "Segoe UI";
+}
+
+.history-heading {
+    -fx-text-fill: #f3e9d8;
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+}
+
+.history-subtitle, .history-panel Label {
+    -fx-text-fill: #e0cdb8;
+}
+
+.history-panel {
+    -fx-background-color: #4b3028;
+    -fx-background-radius: 15;
+}
+
+.history-table {
+    -fx-background-color: #f1e5d4;
+    -fx-background-radius: 9;
+}
+
+.history-table .column-header-background {
+    -fx-background-color: #c66b4d;
+}
+
+.history-table .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.history-panel .text-area {
+    -fx-control-inner-background: #f1e5d4;
+    -fx-text-fill: #34231e;
+    -fx-font-family: monospace;
+    -fx-font-size: 13px;
+}
+
+.history-nav-button, .history-primary-button {
+    -fx-background-radius: 8;
+    -fx-padding: 9 12;
+    -fx-cursor: hand;
+}
+
+.history-nav-button {
+    -fx-background-color: #68483b;
+    -fx-text-fill: #f3e9d8;
+}
+
+.history-primary-button {
+    -fx-background-color: #c66b4d;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.history-message {
+    -fx-min-height: 26px;
+}
+
+.history-success {
+    -fx-text-fill: #b8d7ae;
+}
+
+.history-error {
+    -fx-text-fill: #ffc1ad;
+}

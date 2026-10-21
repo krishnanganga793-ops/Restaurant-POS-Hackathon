@@ -1,0 +1,88 @@
+.order-root {
+    -fx-background-color: #34231e;
+    -fx-font-family: "Segoe UI";
+}
+
+.order-heading {
+    -fx-text-fill: #f3e9d8;
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+}
+
+.order-subtitle, .order-panel Label {
+    -fx-text-fill: #e0cdb8;
+}
+
+.order-panel-heading {
+    -fx-font-size: 19px;
+    -fx-font-weight: bold;
+}
+
+.order-panel {
+    -fx-background-color: #4b3028;
+    -fx-background-radius: 15;
+    -fx-padding: 16;
+}
+
+.order-table {
+    -fx-background-color: #f1e5d4;
+    -fx-background-radius: 9;
+    -fx-border-radius: 9;
+}
+
+.order-table .column-header-background {
+    -fx-background-color: #c66b4d;
+}
+
+.order-table .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.order-panel .text-field {
+    -fx-background-color: #f1e5d4;
+    -fx-background-radius: 8;
+    -fx-border-color: #c4a58e;
+    -fx-border-radius: 8;
+    -fx-padding: 8;
+    -fx-text-fill: #34231e;
+}
+
+.order-primary-button, .order-secondary-button {
+    -fx-background-radius: 8;
+    -fx-padding: 10 14;
+    -fx-cursor: hand;
+}
+
+.order-primary-button {
+    -fx-background-color: #c66b4d;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.order-primary-button:hover {
+    -fx-background-color: #d27b59;
+}
+
+.order-secondary-button {
+    -fx-background-color: #68483b;
+    -fx-text-fill: #f3e9d8;
+}
+
+.order-total {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+.order-message {
+    -fx-min-height: 28px;
+    -fx-text-fill: #b8d7ae;
+}
+
+.order-error {
+    -fx-text-fill: #ffc1ad;
+}
+
+.order-success {
+    -fx-text-fill: #b8d7ae;
+}

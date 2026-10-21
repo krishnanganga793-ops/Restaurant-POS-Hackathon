@@ -1,0 +1,83 @@
+.pay-root, .history-root {
+    -fx-background-color: #34231e;
+    -fx-font-family: "Segoe UI";
+}
+
+.pay-heading, .history-heading {
+    -fx-text-fill: #f3e9d8;
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+}
+
+.pay-subtitle, .history-subtitle, .pay-panel Label, .history-panel Label {
+    -fx-text-fill: #e0cdb8;
+}
+
+.pay-panel, .history-panel {
+    -fx-background-color: #4b3028;
+    -fx-background-radius: 15;
+}
+
+.pay-table, .history-table {
+    -fx-background-color: #f1e5d4;
+    -fx-background-radius: 9;
+    -fx-border-radius: 9;
+}
+
+.pay-table .column-header-background, .history-table .column-header-background {
+    -fx-background-color: #c66b4d;
+}
+
+.pay-table .column-header .label, .history-table .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.pay-panel .text-field, .pay-panel .combo-box {
+    -fx-background-color: #f1e5d4;
+    -fx-background-radius: 8;
+    -fx-border-color: #c4a58e;
+    -fx-border-radius: 8;
+    -fx-padding: 8;
+    -fx-text-fill: #34231e;
+}
+
+.pay-panel .text-area, .history-panel .text-area {
+    -fx-control-inner-background: #f1e5d4;
+    -fx-text-fill: #34231e;
+    -fx-font-family: monospace;
+    -fx-font-size: 13px;
+}
+
+.pay-nav-button, .history-nav-button, .pay-primary-button, .history-primary-button {
+    -fx-background-radius: 8;
+    -fx-padding: 9 12;
+    -fx-cursor: hand;
+}
+
+.pay-nav-button, .history-nav-button {
+    -fx-background-color: #68483b;
+    -fx-text-fill: #f3e9d8;
+}
+
+.pay-primary-button, .history-primary-button {
+    -fx-background-color: #c66b4d;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.pay-primary-button:hover, .history-primary-button:hover {
+    -fx-background-color: #d27b59;
+}
+
+.pay-message, .history-message {
+    -fx-min-height: 26px;
+}
+
+.pay-success, .history-success {
+    -fx-text-fill: #b8d7ae;
+}
+
+.pay-error, .history-error {
+    -fx-text-fill: #ffc1ad;
+}

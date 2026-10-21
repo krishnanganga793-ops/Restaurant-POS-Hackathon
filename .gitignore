@@ -1,0 +1,37 @@
+# Maven and generated build output
+target/
+build/
+out/
+*.class
+
+# Local SQLite databases and journal files
+*.db
+*.sqlite
+*.sqlite3
+*-journal
+*-wal
+*-shm
+
+# Machine-specific Maven settings
+.maven-validation-settings.xml
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+.project
+.classpath
+.settings/
+
+# Operating-system metadata
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Temporary files and caches
+*.tmp
+*.temp
+*.log
+.cache/
+__pycache__/
+*.py[cod]

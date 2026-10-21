@@ -1,0 +1,111 @@
+.login-root {
+    -fx-background-color: #34231e;
+    -fx-font-family: "Segoe UI";
+}
+
+.photo-panel {
+    -fx-background-color: #34231e;
+}
+
+.brand-title {
+    -fx-text-fill: #f3e9d8;
+    -fx-font-size: 30px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 6 0;
+}
+
+.login-card {
+    -fx-background-color: #4b3028;
+    -fx-background-radius: 20;
+    -fx-effect: dropshadow(gaussian, rgba(15, 9, 7, 0.28), 20, 0.12, 0, 5);
+}
+
+.form-subtitle {
+    -fx-text-fill: #e0cdb8;
+    -fx-font-size: 15px;
+    -fx-padding: 0 0 12 0;
+}
+
+.field-label {
+    -fx-text-fill: #f3e9d8;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.login-input {
+    -fx-background-color: #f1e5d4;
+    -fx-background-radius: 9;
+    -fx-border-color: #c4a58e;
+    -fx-border-radius: 9;
+    -fx-padding: 14;
+    -fx-font-size: 15px;
+    -fx-text-fill: #34231e;
+    -fx-prompt-text-fill: #8b7464;
+}
+
+.login-input:focused {
+    -fx-border-color: #d27b59;
+    -fx-border-width: 2;
+}
+
+.message-label {
+    -fx-min-height: 34px;
+    -fx-font-size: 13px;
+}
+
+.error-message {
+    -fx-text-fill: #a34435;
+}
+
+.success-message {
+    -fx-text-fill: #52714d;
+    -fx-font-weight: bold;
+}
+
+.login-button {
+    -fx-background-color: #c66b4d;
+    -fx-background-radius: 9;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-padding: 14;
+    -fx-cursor: hand;
+}
+
+.login-button:hover {
+    -fx-background-color: #d27b59;
+}
+
+.auth-mode-row {
+    -fx-padding: 2 0 8 0;
+}
+
+.auth-mode-button {
+    -fx-background-color: #68483b;
+    -fx-background-radius: 9;
+    -fx-text-fill: #e0cdb8;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 11 14;
+    -fx-cursor: hand;
+}
+
+.auth-mode-button:selected {
+    -fx-background-color: #c66b4d;
+    -fx-text-fill: #ffffff;
+}
+
+.auth-mode-button:hover {
+    -fx-background-color: #805747;
+}
+
+.back-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #e0cdb8;
+    -fx-font-size: 13px;
+    -fx-cursor: hand;
+}
+
+.back-button:hover {
+    -fx-text-fill: #ffffff;
+}
