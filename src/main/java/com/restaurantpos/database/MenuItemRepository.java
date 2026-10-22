@@ -86,6 +86,16 @@ public class MenuItemRepository {
         }
     }
 
+    public void setAvailability(int itemId, boolean available) throws SQLException {
+        String sql = "UPDATE menu_items SET available = ? WHERE menu_item_id = ?";
+        try (Connection connection = Database.openConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, available ? 1 : 0);
+            statement.setInt(2, itemId);
+            statement.executeUpdate();
+        }
+    }
+
     private MenuItem readMenuItem(ResultSet results) throws SQLException {
         return new MenuItem(
             results.getInt("menu_item_id"),

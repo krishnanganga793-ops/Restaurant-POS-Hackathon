@@ -104,3 +104,16 @@ Earlier databases may have an `orders` table without a `table_id` column. During
 ## Money and timestamps
 
 All persisted monetary amounts use integer paise rather than floating-point values: menu prices, order totals, item unit-price snapshots and subtotals, and payment amounts. The interface converts between rupees for display/input and paise for storage. The timestamp columns use SQLite `CURRENT_TIMESTAMP` defaults.
+
+## Loyalty migration
+
+Startup adds missing `orders.customer_id` and `orders.loyalty_discount_paise` columns and creates these tables with `IF NOT EXISTS`; it does not clear or rebuild existing tables.
+
+- `customers`: unique phone-based customer identities.
+- `loyalty_rules`: one rule per menu item, with minimum quantity, points, and active flag. The admin UI limits rules to Food items.
+- `loyalty_settings`: persisted points-per-rupee conversion, seeded at 100 points per ₹1.
+- `loyalty_ledger`: EARN/REDEEM movements; the customer balance is credits less debits. `(order_id, movement_type)` is unique.
+- `loyalty_awards`: one award snapshot per completed customer order, including zero-point results.
+- `loyalty_redemptions`: one redemption snapshot per order, including points and discount paise.
+
+Payment writes, order PAID status, table release, the redemption and ledger debit, and the award and ledger credit are committed or rolled back together. Redemptions convert whole rupees (`floor(points / configured_rate)`) and are capped to leave at least 1 paise payable, matching the existing positive-payment schema. Order item name and price snapshots continue to explain historical purchases after menu edits.

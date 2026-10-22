@@ -32,6 +32,7 @@ public class MenuManagementView {
     private final ComboBox<String> categoryBox = new ComboBox<>();
     private final TextField priceField = new TextField();
     private final CheckBox availableBox = new CheckBox("Available for ordering");
+    private final Button availabilityButton = new Button("Change availability");
     private final Label messageLabel = new Label(" ");
     private MenuItem selectedItem;
 
@@ -118,10 +119,10 @@ public class MenuManagementView {
         saveButton.setMaxWidth(Double.MAX_VALUE);
         saveButton.setOnAction(event -> saveItem());
 
-        Button unavailableButton = new Button("Mark unavailable");
-        unavailableButton.getStyleClass().add("menu-secondary-button");
-        unavailableButton.setMaxWidth(Double.MAX_VALUE);
-        unavailableButton.setOnAction(event -> markUnavailable());
+        availabilityButton.getStyleClass().add("menu-secondary-button");
+        availabilityButton.setMaxWidth(Double.MAX_VALUE);
+        availabilityButton.setDisable(true);
+        availabilityButton.setOnAction(event -> toggleAvailability());
 
         Button clearButton = new Button("Clear form");
         clearButton.getStyleClass().add("menu-secondary-button");
@@ -137,7 +138,7 @@ public class MenuManagementView {
             availableBox,
             addButton,
             saveButton,
-            unavailableButton,
+            availabilityButton,
             clearButton,
             messageLabel
         );
@@ -194,15 +195,21 @@ public class MenuManagementView {
         }
     }
 
-    private void markUnavailable() {
+    private void toggleAvailability() {
         if (selectedItem == null) {
-            showMessage("Select an item before marking it unavailable.", true, false);
+            showMessage("Select an item before changing availability.", true, false);
             return;
         }
+        boolean makeAvailable = !selectedItem.isAvailable();
         try {
-            menuService.markUnavailable(selectedItem.getId());
+            menuService.setAvailability(selectedItem.getId(), makeAvailable);
             loadItems();
-            showMessage("Menu item marked unavailable.", false, true);
+            itemTable.getItems().stream()
+                .filter(item -> item.getId() == selectedItem.getId())
+                .findFirst()
+                .ifPresent(item -> itemTable.getSelectionModel().select(item));
+            showMessage(makeAvailable ? "Menu item is available for ordering again."
+                : "Menu item marked unavailable.", false, true);
         } catch (SQLException exception) {
             showMessage("Could not update this item. Please try again.", true, false);
         }
@@ -211,8 +218,12 @@ public class MenuManagementView {
     private void selectItem(MenuItem item) {
         selectedItem = item;
         if (item == null) {
+            availabilityButton.setDisable(true);
+            availabilityButton.setText("Change availability");
             return;
         }
+        availabilityButton.setDisable(false);
+        availabilityButton.setText(item.isAvailable() ? "Mark unavailable" : "Mark available");
         nameField.setText(item.getName());
         categoryBox.setValue(item.getCategory());
         priceField.setText(BigDecimal.valueOf(item.getPricePaise(), 2).toPlainString());
@@ -227,6 +238,8 @@ public class MenuManagementView {
         categoryBox.getSelectionModel().clearSelection();
         priceField.clear();
         availableBox.setSelected(true);
+        availabilityButton.setDisable(true);
+        availabilityButton.setText("Change availability");
     }
 
     private void showMessage(String text, boolean error, boolean success) {

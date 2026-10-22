@@ -32,6 +32,11 @@ public class OrderService {
 
     public Order saveOrder(int staffUserId, List<OrderItem> cartItems, Integer tableId)
         throws SQLException {
+        return saveOrder(staffUserId, cartItems, tableId, null);
+    }
+
+    public Order saveOrder(int staffUserId, List<OrderItem> cartItems, Integer tableId,
+                           Integer customerId) throws SQLException {
         if (staffUserId <= 0) {
             throw new IllegalArgumentException("The signed-in staff account is not valid.");
         }
@@ -51,6 +56,9 @@ public class OrderService {
                 );
             }
         }
-        return orderRepository.saveOrder(staffUserId, List.copyOf(cartItems), tableId);
+        if (customerId != null && customerId <= 0) {
+            throw new IllegalArgumentException("Select a valid customer or choose Guest.");
+        }
+        return orderRepository.saveOrder(staffUserId, List.copyOf(cartItems), tableId, customerId);
     }
 }

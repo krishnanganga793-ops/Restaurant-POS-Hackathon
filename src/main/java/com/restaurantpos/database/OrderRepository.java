@@ -19,6 +19,11 @@ public class OrderRepository {
 
     public Order saveOrder(int staffUserId, List<OrderItem> requestedItems, Integer tableId)
         throws SQLException {
+        return saveOrder(staffUserId, requestedItems, tableId, null);
+    }
+
+    public Order saveOrder(int staffUserId, List<OrderItem> requestedItems, Integer tableId,
+                           Integer customerId) throws SQLException {
         try (Connection connection = Database.openConnection()) {
             connection.setAutoCommit(false);
             try {
@@ -34,7 +39,7 @@ public class OrderRepository {
                     throw new SQLException("The order total is too large to save.", exception);
                 }
 
-                int orderId = insertOrder(connection, staffUserId, totalPaise, tableId);
+                int orderId = insertOrder(connection, staffUserId, totalPaise, tableId, customerId);
                 insertOrderItems(connection, orderId, currentItems);
                 connection.commit();
                 return new Order(orderId, staffUserId, currentItems);
@@ -94,9 +99,10 @@ public class OrderRepository {
         return currentItems;
     }
 
-    private int insertOrder(Connection connection, int staffUserId, long totalPaise, Integer tableId)
+    private int insertOrder(Connection connection, int staffUserId, long totalPaise, Integer tableId,
+                            Integer customerId)
         throws SQLException {
-        String sql = "INSERT INTO orders (user_id, total_paise, table_id) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO orders (user_id, total_paise, table_id, customer_id) VALUES (?, ?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(
             sql, Statement.RETURN_GENERATED_KEYS
         )) {
@@ -107,6 +113,8 @@ public class OrderRepository {
             } else {
                 statement.setInt(3, tableId);
             }
+            if (customerId == null) statement.setNull(4, java.sql.Types.INTEGER);
+            else statement.setInt(4, customerId);
             statement.executeUpdate();
             try (ResultSet keys = statement.getGeneratedKeys()) {
                 if (keys.next()) {

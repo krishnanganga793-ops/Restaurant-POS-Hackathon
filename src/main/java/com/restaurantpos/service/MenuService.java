@@ -42,6 +42,13 @@ public class MenuService {
         repository.markUnavailable(id);
     }
 
+    public void setAvailability(int id, boolean available) throws SQLException {
+        if (id <= 0) {
+            throw new IllegalArgumentException("Select a valid menu item.");
+        }
+        repository.setAvailability(id, available);
+    }
+
     private String validateName(String name) {
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Enter a name for the menu item.");

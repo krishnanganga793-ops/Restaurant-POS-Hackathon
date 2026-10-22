@@ -3,6 +3,7 @@ package com.restaurantpos.ui;
 import com.restaurantpos.model.User;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
+import java.util.ArrayList;
 import javafx.stage.Stage;
 
 /** Shared navigation buttons for the staff screens. */
@@ -27,7 +28,12 @@ final class NavigationBar {
             () -> stage.setScene(new OrderHistoryView(stage, user).createScene()));
         Button tables = button("Tables", styleClass,
             () -> stage.setScene(new TableManagementView(stage, user).createScene()));
-        return new HBox(8, dashboard, menu, order, payments, history, tables);
+        ArrayList<Button> buttons = new ArrayList<>(java.util.List.of(dashboard, menu, order, payments, history, tables));
+        if ("ADMIN".equals(user.getRole())) {
+            buttons.add(button("Loyalty Rules", styleClass,
+                () -> stage.setScene(new LoyaltyRulesView(stage, user).createScene())));
+        }
+        return new HBox(8, buttons.toArray(Button[]::new));
     }
 
     private static Button button(String text, String styleClass, Runnable action) {

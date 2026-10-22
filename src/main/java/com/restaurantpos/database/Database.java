@@ -14,7 +14,6 @@ public final class Database {
 
     private Database() {
     }
-
     /** Opens a connection and enables foreign-key checks for that connection. */
     public static Connection openConnection() throws SQLException {
         Path databaseFile = getDatabaseFile();
@@ -35,7 +34,7 @@ public final class Database {
         }
     }
 
-    /** Creates the tables the first time the application runs. */
+    /** Creates missing tables and applies additive schema migrations. */
     public static void initialize() throws SQLException {
         try (Connection connection = openConnection();
              Statement statement = connection.createStatement()) {
@@ -131,11 +130,95 @@ public final class Database {
                     FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE RESTRICT
                 )
                 """);
+
+            // Loyalty schema is additive so existing customer, order, and payment data is retained.
+            statement.executeUpdate("""
+                CREATE TABLE IF NOT EXISTS customers (
+                    customer_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    name TEXT NOT NULL,
+                    phone TEXT NOT NULL COLLATE NOCASE UNIQUE,
+                    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+                )
+                """);
+            addColumnIfMissing(connection, "orders", "customer_id",
+                "INTEGER REFERENCES customers(customer_id) ON DELETE RESTRICT");
+            statement.executeUpdate("CREATE INDEX IF NOT EXISTS idx_orders_customer ON orders(customer_id)");
+            statement.executeUpdate("""
+                CREATE TABLE IF NOT EXISTS loyalty_rules (
+                    rule_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    menu_item_id INTEGER NOT NULL UNIQUE,
+                    minimum_quantity INTEGER NOT NULL CHECK (minimum_quantity > 0),
+                    points_awarded INTEGER NOT NULL CHECK (points_awarded > 0),
+                    active INTEGER NOT NULL DEFAULT 1 CHECK (active IN (0, 1)),
+                    FOREIGN KEY (menu_item_id) REFERENCES menu_items(menu_item_id) ON DELETE RESTRICT
+                )
+                """);
+            statement.executeUpdate("""
+                CREATE TABLE IF NOT EXISTS loyalty_settings (
+                    setting_key TEXT PRIMARY KEY,
+                    setting_value INTEGER NOT NULL CHECK (setting_value > 0)
+                )
+                """);
+            statement.executeUpdate("""
+                INSERT OR IGNORE INTO loyalty_settings(setting_key, setting_value)
+                VALUES ('points_per_rupee', 100)
+                """);
+            statement.executeUpdate("""
+                CREATE TABLE IF NOT EXISTS loyalty_ledger (
+                    ledger_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    customer_id INTEGER NOT NULL,
+                    order_id INTEGER NOT NULL,
+                    movement_type TEXT NOT NULL CHECK (movement_type IN ('EARN', 'REDEEM')),
+                    points INTEGER NOT NULL CHECK (points > 0),
+                    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                    UNIQUE(order_id, movement_type),
+                    FOREIGN KEY (customer_id) REFERENCES customers(customer_id) ON DELETE RESTRICT,
+                    FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE RESTRICT
+                )
+                """);
+            statement.executeUpdate("""
+                CREATE TABLE IF NOT EXISTS loyalty_redemptions (
+                    order_id INTEGER PRIMARY KEY,
+                    customer_id INTEGER NOT NULL,
+                    points_redeemed INTEGER NOT NULL CHECK (points_redeemed > 0),
+                    discount_paise INTEGER NOT NULL CHECK (discount_paise > 0),
+                    FOREIGN KEY (customer_id) REFERENCES customers(customer_id) ON DELETE RESTRICT,
+                    FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE RESTRICT
+                )
+                """);
+            statement.executeUpdate("""
+                CREATE TABLE IF NOT EXISTS loyalty_awards (
+                    order_id INTEGER PRIMARY KEY,
+                    customer_id INTEGER NOT NULL,
+                    points_awarded INTEGER NOT NULL CHECK (points_awarded >= 0),
+                    FOREIGN KEY (customer_id) REFERENCES customers(customer_id) ON DELETE RESTRICT,
+                    FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE RESTRICT
+                )
+                """);
+            addColumnIfMissing(connection, "orders", "loyalty_discount_paise",
+                "INTEGER NOT NULL DEFAULT 0 CHECK (loyalty_discount_paise >= 0)");
+        }
+    }
+
+    private static void addColumnIfMissing(Connection connection, String table, String column,
+                                            String definition) throws SQLException {
+        try (Statement statement = connection.createStatement();
+             var columns = statement.executeQuery("PRAGMA table_info(" + table + ")")) {
+            while (columns.next()) {
+                if (column.equalsIgnoreCase(columns.getString("name"))) {
+                    return;
+                }
+            }
+        }
+        try (Statement statement = connection.createStatement()) {
+            statement.executeUpdate("ALTER TABLE " + table + " ADD COLUMN " + column + " " + definition);
         }
     }
 
     /** Returns the location used for the local database file. */
     public static Path getDatabaseFile() {
+        String override = System.getProperty("restaurantpos.database.file");
+        if (override != null && !override.isBlank()) return Path.of(override).toAbsolutePath();
         String operatingSystem = System.getProperty("os.name", "").toLowerCase();
         Path dataDirectory;
 

@@ -3,6 +3,7 @@ package com.restaurantpos.service;
 import com.restaurantpos.database.PaymentRepository;
 import com.restaurantpos.model.OrderSummary;
 import com.restaurantpos.model.Payment;
+import com.restaurantpos.model.LoyaltyCheckout;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.SQLException;
@@ -25,6 +26,14 @@ public class PaymentService {
     }
 
     public Payment recordPayment(int orderId, String amount, String method) throws SQLException {
+        return recordPayment(orderId, amount, method, 0);
+    }
+
+    public LoyaltyCheckout getLoyaltyCheckout(int orderId, int points) throws SQLException {
+        return repository.getLoyaltyCheckout(orderId, points);
+    }
+
+    public Payment recordPayment(int orderId, String amount, String method, int points) throws SQLException {
         if (orderId <= 0) {
             throw new IllegalArgumentException("Select a saved order first.");
         }
@@ -32,7 +41,13 @@ public class PaymentService {
             throw new IllegalArgumentException("Choose a valid payment method.");
         }
         long amountPaise = parseAmount(amount);
-        return repository.recordFullPayment(orderId, amountPaise, method);
+        if (points < 0) throw new IllegalArgumentException("Points to redeem cannot be negative.");
+        if (points > 0) {
+            // Reject invalid redemptions early; PaymentRepository rechecks against the
+            // balance inside its payment transaction to handle stale quotes safely.
+            repository.getLoyaltyCheckout(orderId, points);
+        }
+        return repository.recordFullPayment(orderId, amountPaise, method, points);
     }
 
     private long parseAmount(String amount) {

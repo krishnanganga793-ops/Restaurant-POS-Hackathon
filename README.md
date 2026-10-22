@@ -10,6 +10,8 @@ A JavaFX desktop point-of-sale application for a small restaurant. It uses SQLit
 - Table management with ten initial tables, reservations, and links between dine-in orders and tables.
 - Payment recording for saved orders, plus receipt display, text-file saving, and printing.
 - Sales dashboard with figures read from the SQLite database.
+- Customer loyalty: attach a customer by unique phone number, earn points for configured food items, and redeem points at checkout.
+- Administrator-only loyalty rule configuration and points-to-rupee conversion settings.
 
 ## Technologies
 
@@ -64,6 +66,16 @@ On startup, the application creates the database directory and initializes missi
 - Linux and other systems: `$XDG_DATA_HOME/RestaurantPOS/restaurant-pos.db`, or `~/.local/share/RestaurantPOS/restaurant-pos.db` when `XDG_DATA_HOME` is unset
 
 The database schema, relationships, and table-assignment migration are documented in [DATABASE_SCHEMA.md](DATABASE_SCHEMA.md). Money is stored as integer paise.
+
+## Loyalty module
+
+Cashiers can register a customer from Order Entry and select that customer for an order. Leaving the customer selector blank saves a guest order, which does not earn or redeem points. Phone numbers identify customers and must be unique. On successful payment, each active food-item rule awards its points once when the order quantity reaches the rule's minimum. Quantities above the minimum do not multiply the award. One rule per menu item prevents duplicate awards; editing a rule replaces that item's existing rule.
+
+Administrators open **Loyalty Rules** from the navigation to create, activate, deactivate, or remove food-item rules. The same screen configures the conversion rate; the default is 100 points for ₹1. Redemption uses whole rupee increments: discount = floor(points offered / points-per-rupee) × 100 paise. It is capped at the eligible bill subtotal while leaving at least 1 paise payable, because this POS records positive-amount payments. Only points that correspond to the applied whole-rupee discount are debited. Payment, order status, points earned, and redemption are committed in one SQLite transaction. A failed payment leaves balances unchanged. Unique order ledger entries prevent repeat credits or debits.
+
+Example: an active rule with minimum quantity 2 and 10 points awards 0 points for quantity 1, and 10 points for quantity 2 or 4. At 100 points per rupee, redeeming 250 points applies ₹2.00 and debits 200 points; the remaining 50 points stay on the customer's balance.
+
+Run the test suite with `mvn test` (use your Maven settings if required). The loyalty persistence tests use a temporary SQLite database.
 
 ## Demo accounts
 
